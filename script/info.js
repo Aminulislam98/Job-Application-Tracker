@@ -1,7 +1,28 @@
 let interview = [];
 let rejected = [];
-// refresh the tab when clicking the interview and rejected button to all update details
 let currentTabId = "info-toggle";
+let mainContainer = document.querySelector("main");
+
+// process to delete the card from section
+
+mainContainer.addEventListener("click", (event) => {
+  if (currentTabId === "interview-toggle") {
+    if (
+      event.target.classList.contains("fa-regular") ||
+      event.target.classList.contains("application-delete")
+    ) {
+      let parent = event.target.parentNode.parentNode.parentNode;
+      let name = parent.querySelector(".application-name").innerText;
+      interview = interview.filter((item) => item.name != name);
+      setTotalInterviewRejectedCount();
+      refreshPage();
+      updateInterViewCount();
+      updateRejectedCount();
+      updateAvailableJobCount();
+    }
+  }
+});
+// refresh the tab when clicking the interview and rejected button to all update details
 function refreshPage() {
   if (currentTabId === "interview-toggle") {
     renderInterview();
@@ -21,8 +42,6 @@ function refreshPage() {
   }
 }
 
-// get the card details by parent
-let mainContainer = document.querySelector("main");
 mainContainer.addEventListener("click", (event) => {
   if (event.target.classList.contains("interview-button")) {
     let parent = event.target.parentNode.parentNode.parentNode;
@@ -33,10 +52,6 @@ mainContainer.addEventListener("click", (event) => {
     let description = parent.querySelector(
       ".application-description",
     ).innerText;
-
-    // let statusOf = parent.querySelector(".application-not-applied");
-
-    // statusOf.classList.add("bg-green-600", "text-white");
 
     let applicationInfo = {
       name,
@@ -222,14 +237,12 @@ function toggleButton(id) {
       setTotalInterviewRejectedCount();
       renderInterview();
       showSelectedSectionForInterview();
-      document.getElementById("active-jobs").innerText =
-        `${interview.length} of ${allCardSection.children.length}`;
+      updateInterViewCount();
     } else if (id === "rejected-toggle") {
       setTotalInterviewRejectedCount();
       renderRejected();
       showSelectedSectionForRejected();
-      document.getElementById("active-jobs").innerText =
-        `${rejected.length} of ${allCardSection.children.length}`;
+      updateRejectedCount();
     } else if (id === "info-toggle") {
       setTotalInterviewRejectedCount();
       let makeHideAllCardSection = document.getElementById("allCardSection");
@@ -240,8 +253,7 @@ function toggleButton(id) {
       makeHideInterviewSection.classList.add("hidden");
       let showRejectionSection = document.getElementById("rejectedCardSection");
       showRejectionSection.classList.add("hidden");
-      document.getElementById("active-jobs").innerText =
-        `${allCardSection.children.length} Jobs`;
+      updateAvailableJobCount();
     }
   }
 }
@@ -264,11 +276,13 @@ function renderInterview() {
               </p>
             </div>
 
-            <button
-              class="application-delete btn btn-error w-8 h-8 rounded-full border flex items-center justify-center"
-            >
-              <i class="fa-regular fa-trash-can w-4 h-4"></i>
-            </button>
+            <div class="delete-button">
+              <button
+                class="application-delete btn btn-error w-8 h-8 rounded-full border flex items-center justify-center"
+              >
+                <i class="fa-regular fa-trash-can w-4 h-4"></i>
+              </button>
+            </div>
           </div>
           <div class="card-description">
             <p
@@ -319,11 +333,13 @@ function renderRejected() {
               </p>
             </div>
 
-            <button
-              class="application-delete btn btn-error w-8 h-8 rounded-full border flex items-center justify-center"
-            >
-              <i class="fa-regular fa-trash-can w-4 h-4"></i>
-            </button>
+            <div class="delete-button">
+              <button
+                class="application-delete btn btn-error w-8 h-8 rounded-full border flex items-center justify-center"
+              >
+                <i class="fa-regular fa-trash-can w-4 h-4"></i>
+              </button>
+            </div>
           </div>
           <div class="card-description">
             <p
@@ -354,4 +370,16 @@ function renderRejected() {
     `;
   });
   document.getElementById("rejectedCardSection").innerHTML = html;
+}
+function updateInterViewCount() {
+  document.getElementById("active-jobs").innerText =
+    `${interview.length} of ${allCardSection.children.length}`;
+}
+function updateRejectedCount() {
+  document.getElementById("active-jobs").innerText =
+    `${rejected.length} of ${allCardSection.children.length}`;
+}
+function updateAvailableJobCount() {
+  document.getElementById("active-jobs").innerText =
+    `${allCardSection.children.length} Jobs`;
 }
