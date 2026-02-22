@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application Tracker</title>
+    <!-- tailwind external file -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- daisyUI -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- header -->
+    <header class="w-full bg-green-800">
+      <header class="container mx-auto">
+        <h1 class="header font-bold text-[32px] mb-5">
+          Job Application Tracker
+        </h1>
+      </header>
+      <div class="count-parent grid grid-cols-3 gap-4">
+        <div class="total p-5 rounded-[8px] border border-gray-300">
+          <p class="mb-2 font-medium text-[14px]">Total</p>
+          <h2 id="totalCount" class="font-bold text-[24px]">0</h2>
+        </div>
+        <div class="interview p-5 rounded-[8px] border border-gray-300">
+          <p class="mb-2 font-medium text-[14px]">Interview</p>
+          <h2 id="interviewCount" class="font-bold text-[24px] text-green-600">
+            0
+          </h2>
+        </div>
+        <div class="rejected p-5 rounded-[8px] border border-gray-300">
+          <p class="mb-2 font-medium text-[14px]">Rejected</p>
+          <h2 id="rejectedCount" class="font-bold text-[24px] text-red-600">
+            0
+          </h2>
+        </div>
+      </div>
+    </header>
+    <hr class="border border-gray-100 container mx-auto my-7" />
+
+    <!-- job card section -->
+    <main class="job-details-card-container container mx-auto">
+      <header class="all-interview-rejected-btns">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="font-semibold text-[20px]">Available Jobs</h2>
+          <p class="font-semibold text-[1rem] text-gray-700">8 jobs</p>
+        </div>
+        <div class="">
+          <button
+            onclick="toggleButton('info-toggle')"
+            id="info-toggle"
+            class="btn py-[10px] w-[80px] rounded-[4px] font-semibold text-[12px] text-white bg-[#3B82F6]"
+          >
+            Info
+          </button>
+          <button
+            onclick="toggleButton('interview-toggle')"
+            id="interview-toggle"
+            class="btn py-[10px] w-[80px] rounded-[4px] font-semibold text-[12px] text-gray-500 bg-white"
+          >
+            Interview
+          </button>
+          <button
+            onclick="toggleButton('rejected-toggle')"
+            id="rejected-toggle"
+            class="btn py-[10px] w-[80px] rounded-[4px] font-semibold text-[12px] text-gray-500 bg-white"
+          >
+            Rejected
+          </button>
+        </div>
+      </header>
+    </main>
+
+    <section
+      id="interview-section"
+      class="noJobsAvailAble container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-gray-600 mt-4 hidden"
+    >
+      <img src="assets/jobs.png" alt="NO JOBS" />
+      <h2 class="font-semibold text-[24px] mb-1 mt-5">No jobs available</h2>
+      <p class="font-normal text-[1rem] text-gray-600">
+        Check back soon for new job opportunities
+      </p>
+    </section>
+    <section
+      id="rejected-section"
+      class="noJobsAvailAble container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-gray-600 mt-4 hidden"
+    >
+      <img src="assets/jobs.png" alt="NO JOBS" />
+      <h2 class="font-semibold text-[24px] mb-1 mt-5">No jobs available</h2>
+      <p class="font-normal text-[1rem] text-gray-600">
+        Check back soon for new job opportunities
+      </p>
+    </section>
+    <script src="script/info.js"></script>
+  </body>
+</html>
