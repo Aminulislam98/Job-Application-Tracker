@@ -45,11 +45,11 @@
         </h1>
         <div class="count-parent grid grid-cols-3 gap-4">
           <div class="total p-5 rounded-[8px] border border-gray-300">
-            <p class="mb-2 font-medium text-[14px]">Total</p>
+            <p class="mb-2 font-bold text-[14px]">TOTAL</p>
             <h2 id="totalCount" class="font-bold text-[24px]">0</h2>
           </div>
           <div class="interview p-5 rounded-[8px] border border-gray-300">
-            <p class="mb-2 font-medium text-[14px]">Interview</p>
+            <p class="mb-2 font-bold text-[14px] text-green-600">INTERVIEW</p>
             <h2
               id="interviewCount"
               class="font-bold text-[24px] text-green-600"
@@ -58,7 +58,7 @@
             </h2>
           </div>
           <div class="rejected p-5 rounded-[8px] border border-gray-300">
-            <p class="mb-2 font-medium text-[14px]">Rejected</p>
+            <p class="mb-2 font-bold text-[14px] text-red-600">REJECTED</p>
             <h2 id="rejectedCount" class="font-bold text-[24px] text-red-600">
               0
             </h2>
@@ -145,11 +145,16 @@
       </p>
     </section>
 
-    <!-- rejection section
     <section
-      id="rejectedCardSection"
-      class="all-cards-section container mx-auto mt-4 grid grid-cols-1 gap-4 hidden"
-    ></section> -->
+      id="noJobsAvailAble-section-for-info"
+      class="noJobsAvailAble container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-red-800 mt-4 hidden"
+    >
+      <img src="assets/jobs.png" alt="NO JOBS" />
+      <h2 class="font-semibold text-[24px] mb-1 mt-5">No jobs available</h2>
+      <p class="font-normal text-[1rem] text-gray-600">
+        Check back soon for new job opportunities
+      </p>
+    </section>
 
     <script src="script/info.js"></script>
   </body>

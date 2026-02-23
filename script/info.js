@@ -4,7 +4,7 @@ let allJobs = [
     name: "Mobile First Corp",
     status: "React Native Developer",
     salary: "Remote • Full-time • $130,000 - $175,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.",
   },
@@ -12,7 +12,7 @@ let allJobs = [
     name: "WebFlow Agency",
     status: "Web Designer & Developer",
     salary: "Los Angeles, CA• Part-time •$80,000 - $120,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Create stunning web experiences for high-profile clients. Must have portfolio and experience with modern web design trends.",
   },
@@ -20,7 +20,7 @@ let allJobs = [
     name: "DataViz Solutions",
     status: "Data Visualization Specialist",
     salary: "Boston, MA •Full-time•$125,000 - $165,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Transform complex data into compelling visualizations. Required skills: D3.js, React, and strong analytical thinking.",
   },
@@ -28,7 +28,7 @@ let allJobs = [
     name: "CloudFirst Inc",
     status: "Backend Developer",
     salary: "Seattle, WA•Full-tim •$140,000 - $190,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Design and maintain scalable backend systems using Python and AWS. Work with modern DevOps practices and cloud infrastructure.",
   },
@@ -36,7 +36,7 @@ let allJobs = [
     name: "Innovation Labs",
     status: "UI/UX Engineer",
     salary: "Austin, TX • Full-time • $110,000 - $150,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Create beautiful and functional user interfaces for our suite of products. Strong design skills and frontend development expertise required.",
   },
@@ -44,7 +44,7 @@ let allJobs = [
     name: "MegaCorp Solutions",
     status: "JavaScript Developer",
     salary: "New York, NY • Full-time • $130,000 - $170,00",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Build enterprise applications with JavaScript and modern frameworks. We offer competitive compensation, health insurance, and professional development opportunities.",
   },
@@ -52,7 +52,7 @@ let allJobs = [
     name: "StartupXYZ",
     status: "Full Stack Engineer",
     salary: "Remote • Full-time • $120,000 - $160,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "Join our fast-growing startup and work on our core platform. Experience with Node.js and React required. Great benefits and equity package included.",
   },
@@ -60,7 +60,7 @@ let allJobs = [
     name: "TechCorp Industries",
     status: "Senior Frontend Developer",
     salary: "San Francisco, CA • Full-time • $130,000 - $175,000",
-    notApplied: "Not applied",
+    notApplied: "NOT APPLIED",
     description:
       "We are looking for an experienced Frontend Developer to build scalable web applications using React and TypeScript. You will work with a talented team on cutting-edge projects.",
   },
@@ -81,10 +81,17 @@ mainContainer.addEventListener("click", (event) => {
       let parent = event.target.parentNode.parentNode.parentNode;
       let name = parent.querySelector(".application-name").innerText;
       interview = interview.filter((item) => item.name != name);
+
+      // removing the green border from all jobs section when clicking delete
+      allJobs = allJobs.map((item) =>
+        item.name === name ? { ...item, notApplied: "NOT APPLIED" } : item,
+      );
+      renderAllJobs();
+      renderInterview();
       setTotalInterviewRejectedCount();
-      refreshPage();
       updateInterViewCount();
       updateRejectedCount();
+      refreshPage();
     }
   } else if (currentTabId === "rejected-toggle") {
     if (
@@ -94,7 +101,20 @@ mainContainer.addEventListener("click", (event) => {
       let parent = event.target.parentNode.parentNode.parentNode;
       let name = parent.querySelector(".application-name").innerText;
       rejected = rejected.filter((item) => item.name != name);
+
+      // removing the red border from all jobs section when clicking delete
+      allJobs = allJobs.map((item) =>
+        item.name === name ? { ...item, notApplied: "NOT APPLIED" } : item,
+      );
+
+      // reassigning the array when deleting card from info section
+      rejected = rejected.filter((item) => item.name != name);
+      interview = interview.filter((item) => item.name != name);
+      renderAllJobs();
       setTotalInterviewRejectedCount();
+      renderRejected();
+      updateInterViewCount();
+      updateRejectedCount();
       refreshPage();
     }
   } else if (currentTabId === "info-toggle") {
@@ -104,12 +124,19 @@ mainContainer.addEventListener("click", (event) => {
     ) {
       let parent = event.target.parentNode.parentNode.parentNode;
       let name = parent.querySelector(".application-name").innerText;
+      // reassigning the array when deleting card from info section
+      interview = interview.filter((item) => item.name != name);
+      rejected = rejected.filter((item) => item.name != name);
       allJobs = allJobs.filter((item) => item.name != name);
+
       setTotalInterviewRejectedCount();
-      refreshPage();
+      noJobAvailableSectionForInfo();
+      updateAvailableJobCount();
+      renderAllJobs();
     }
   }
 });
+
 // refresh the tab when clicking the interview and rejected button to all update details
 function refreshPage() {
   if (currentTabId === "interview-toggle") {
@@ -123,36 +150,40 @@ function refreshPage() {
   } else if (currentTabId === "info-toggle") {
     let makeHideAllCardSection = document.getElementById("allCardSection");
     makeHideAllCardSection.classList.remove("hidden");
-
     let makeHideInterviewSection = document.getElementById(
       "noJobsAvailAble-section",
     );
     makeHideInterviewSection.classList.add("hidden");
-
     let showRejectionSection = document.getElementById("rejectedCardSection");
     showRejectionSection.classList.add("hidden");
-    renderAllJobs();
-    updateAvailableJobCount();
   }
 }
+
+// border-l-5 border-l-green-600 rounded-md
+// border border-gray-100
 
 mainContainer.addEventListener("click", (event) => {
   if (event.target.classList.contains("interview-button")) {
     let parent = event.target.parentNode.parentNode.parentNode;
+
     let name = parent.querySelector(".application-name").innerText;
     let status = parent.querySelector(".application-status").innerText;
     let salary = parent.querySelector(".application-salary").innerText;
-    let notApplied = parent.querySelector(".application-not-applied").innerText;
     let description = parent.querySelector(
       ".application-description",
     ).innerText;
+    parent.classList.add("border", "border-red-600");
+
+    allJobs = allJobs.map((job) =>
+      job.name === name ? { ...job, notApplied: "INTERVIEW" } : job,
+    );
 
     let applicationInfo = {
       name,
       status,
       salary,
-      notApplied,
       description,
+      notApplied: "INTERVIEW",
     };
 
     let exists = interview.find((item) => item.name == applicationInfo.name);
@@ -162,29 +193,33 @@ mainContainer.addEventListener("click", (event) => {
       setTotalInterviewRejectedCount();
     }
     rejected = rejected.filter((item) => item.name != applicationInfo.name);
+    renderAllJobs();
     renderInterview();
     renderRejected();
     setTotalInterviewRejectedCount();
-    updateInterViewCount();
     refreshPage();
   } else if (event.target.classList.contains("rejected-btn")) {
     let parent = event.target.parentNode.parentNode.parentNode;
     let name = parent.querySelector(".application-name").innerText;
     let status = parent.querySelector(".application-status").innerText;
     let salary = parent.querySelector(".application-salary").innerText;
-    let notApplied = parent.querySelector(".application-not-applied").innerText;
     let description = parent.querySelector(
       ".application-description",
     ).innerText;
 
-    parent.querySelector(".application-not-applied").innerText = "REJECTED";
+    allJobs = allJobs.map((job) =>
+      job.name === name ? { ...job, notApplied: "REJECTED" } : job,
+    );
+
+    let notApplied = parent.querySelector(".application-not-applied");
+    console.log(notApplied);
 
     let applicationInfo = {
       name,
       status,
       salary,
-      notApplied,
       description,
+      notApplied: "REJECTED",
     };
 
     let exists = rejected.find((item) => item.name == applicationInfo.name);
@@ -195,10 +230,10 @@ mainContainer.addEventListener("click", (event) => {
     }
 
     interview = interview.filter((item) => item.name != applicationInfo.name);
+    renderAllJobs();
     renderRejected();
     renderInterview();
     setTotalInterviewRejectedCount();
-    updateRejectedCount();
     refreshPage();
   }
 });
@@ -332,11 +367,13 @@ function toggleButton(id) {
       renderInterview();
       showSelectedSectionForInterview();
       updateInterViewCount();
+      noJobAvailableSectionForInfo();
     } else if (id === "rejected-toggle") {
       setTotalInterviewRejectedCount();
       renderRejected();
       showSelectedSectionForRejected();
       updateRejectedCount();
+      noJobAvailableSectionForInfo();
     } else if (id === "info-toggle") {
       let makeHideAllCardSection = document.getElementById("allCardSection");
       makeHideAllCardSection.classList.remove("hidden");
@@ -352,8 +389,8 @@ function toggleButton(id) {
         "interviewAllCardSection",
       );
       allCardFromInterviewSection.classList.add("hidden");
-      renderAllJobs();
       updateAvailableJobCount();
+      noJobAvailableSectionForInfo();
     }
   }
 }
@@ -362,8 +399,22 @@ function toggleButton(id) {
 function renderAllJobs() {
   let html = "";
   allJobs.forEach((item) => {
+    // checking the status if interview show the green border else red
+    const leftBorder =
+      item.notApplied === "INTERVIEW"
+        ? "border-4 border-l-green-600"
+        : item.notApplied === "REJECTED"
+          ? "border-4 border-l-red-600"
+          : "";
+    // changing style based on the interview and rejected
+    const statusStyle =
+      item.notApplied === "INTERVIEW"
+        ? "border-1 bg-green-600 text-white rounded-lg"
+        : item.notApplied === "REJECTED"
+          ? "border-1 bg-red-600 text-white rounded-lg"
+          : "";
     html += `
-    <div class="card w-full p-6 shadow border border-gray-100">
+    <div class="application-section w-full p-6 shadow border rounded-xl border-gray-100 ${leftBorder}">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
@@ -389,8 +440,7 @@ function renderAllJobs() {
             >
               ${item.salary}
             </p>
-            <p
-              class="application-not-applied bg-[#EEF4FF] py-2 px-3 font-medium text-[14px] inline"
+            <p class="current-status bg-[#EEF4FF] rounded-lg py-2 px-3 font-medium text-[14px] inline ${statusStyle}"
             >
              ${item.notApplied}
             </p>
@@ -425,7 +475,7 @@ function renderInterview() {
   let html = "";
   interview.forEach((item) => {
     html += `
-    <div class="card w-full p-6 shadow border border-gray-100">
+    <div class="card w-full p-6 shadow border border-gray-100 border-l-4 border-l-green-600">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
@@ -453,9 +503,9 @@ function renderInterview() {
               ${item.salary}
             </p>
             <p
-              class="application-not-applied bg-[#EEF4FF] py-2 px-3 font-medium text-[14px] inline rounded bg-green-600 text-white"
+              class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-green-600 bg-green-600/30 border-2 border-green-600 cursor-pointer"
             >
-              ${(item.notApplied = "INTERVIEW")}
+              ${item.notApplied}
             </p>
             <p
               class="application-description font-normal text-[16px] text-gray-600 mb-5 mt-3"
@@ -463,7 +513,7 @@ function renderInterview() {
               ${item.description}
             </p>
             <div class="flex gap-2">
-              <button id="interview-btn" class="interview-button btn btn-success bg-green-600 text-white shadow-sm border border-green-600">
+              <button id="interview-btn" class="interview-button btn btn-outline btn-accent">
                 INTERVIEW
               </button>
               <button id="rejected-btn" class="rejected-btn btn btn-outline btn-error">
@@ -482,7 +532,7 @@ function renderRejected() {
   let html = "";
   rejected.forEach((item) => {
     html += `
-    <div class="card w-full p-6 shadow border border-gray-100">
+    <div class="card w-full p-6 shadow border border-gray-100 border-l-4 border-l-red-600 ">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
@@ -510,9 +560,9 @@ function renderRejected() {
               ${item.salary}
             </p>
             <p
-              class="application-not-applied bg-[#EEF4FF] py-2 px-3 font-medium text-[14px] inline rounded text-white bg-red-600"
+              class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-red-600 bg-red-600/30 border-2 border-red-600 cursor-pointer"
             >
-              ${(item.notApplied = "REJECTED")}
+              ${item.notApplied}
             </p>
             <p
               class="application-description font-normal text-[16px] text-gray-600 mb-5 mt-3"
@@ -523,7 +573,7 @@ function renderRejected() {
               <button id="interview-btn" class="interview-button btn btn-outline btn-accent">
                 INTERVIEW
               </button>
-              <button id="rejected-btn" class="rejected-btn btn btn-outline btn-error bg-red-600 text-white">
+              <button id="rejected-btn" class="rejected-btn btn btn-outline btn-error ">
                 REJECTED
               </button>
             </div>
@@ -536,14 +586,46 @@ function renderRejected() {
 
 // update the count of the application number
 function updateInterViewCount() {
-  document.getElementById("active-jobs").innerText =
-    `${interview.length} of ${allJobs.length}`;
+  if (interview.length === 0) {
+    document.getElementById("active-jobs").innerText =
+      `${interview.length} jobs`;
+  } else {
+    document.getElementById("active-jobs").innerText =
+      `${interview.length} of ${allJobs.length} jobs`;
+  }
 }
 function updateRejectedCount() {
-  document.getElementById("active-jobs").innerText =
-    `${rejected.length} of ${allJobs.length}`;
+  if (rejected.length === 0) {
+    document.getElementById("active-jobs").innerText =
+      `${rejected.length} jobs`;
+  } else {
+    document.getElementById("active-jobs").innerText =
+      `${rejected.length} of ${allJobs.length} jobs`;
+  }
 }
 function updateAvailableJobCount() {
-  document.getElementById("active-jobs").innerText = `${allJobs.length} Jobs`;
+  document.getElementById("active-jobs").innerText = `${allJobs.length} jobs`;
 }
 updateAvailableJobCount();
+
+// if the all jobs section is empty show this no jobs available section
+function noJobAvailableSectionForInfo() {
+  if (currentTabId === "info-toggle") {
+    if (allJobs.length === 0) {
+      let allJobForNoJob = document.getElementById(
+        "noJobsAvailAble-section-for-info",
+      );
+      allJobForNoJob.classList.remove("hidden");
+    } else {
+      let allJobForNoJob = document.getElementById(
+        "noJobsAvailAble-section-for-info",
+      );
+      allJobForNoJob.classList.add("hidden");
+    }
+  } else {
+    let allJobForNoJob = document.getElementById(
+      "noJobsAvailAble-section-for-info",
+    );
+    allJobForNoJob.classList.add("hidden");
+  }
+}
