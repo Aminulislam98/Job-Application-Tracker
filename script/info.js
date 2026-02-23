@@ -3,7 +3,9 @@ let allJobs = [
   {
     name: "Mobile First Corp",
     status: "React Native Developer",
-    salary: "Remote • Full-time • $130,000 - $175,000",
+    location: "Remote",
+    type: "Full-time",
+    salary: "$130,000 - $175,000",
     notApplied: "NOT APPLIED",
     description:
       "Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.",
@@ -11,7 +13,9 @@ let allJobs = [
   {
     name: "WebFlow Agency",
     status: "Web Designer & Developer",
-    salary: "Los Angeles, CA• Part-time •$80,000 - $120,000",
+    location: "Los Angeles, CA",
+    type: "Part-time",
+    salary: "$80,000 - $120,000",
     notApplied: "NOT APPLIED",
     description:
       "Create stunning web experiences for high-profile clients. Must have portfolio and experience with modern web design trends.",
@@ -19,7 +23,9 @@ let allJobs = [
   {
     name: "DataViz Solutions",
     status: "Data Visualization Specialist",
-    salary: "Boston, MA •Full-time•$125,000 - $165,000",
+    location: "Boston, MA",
+    type: "Full-time",
+    salary: "$125,000 - $165,000",
     notApplied: "NOT APPLIED",
     description:
       "Transform complex data into compelling visualizations. Required skills: D3.js, React, and strong analytical thinking.",
@@ -27,7 +33,9 @@ let allJobs = [
   {
     name: "CloudFirst Inc",
     status: "Backend Developer",
-    salary: "Seattle, WA•Full-tim •$140,000 - $190,000",
+    location: "Seattle, WA",
+    type: "Full-time",
+    salary: "$140,000 - $190,000",
     notApplied: "NOT APPLIED",
     description:
       "Design and maintain scalable backend systems using Python and AWS. Work with modern DevOps practices and cloud infrastructure.",
@@ -35,7 +43,9 @@ let allJobs = [
   {
     name: "Innovation Labs",
     status: "UI/UX Engineer",
-    salary: "Austin, TX • Full-time • $110,000 - $150,000",
+    location: "Austin, TX",
+    type: "Full-time",
+    salary: "$110,000 - $150,000",
     notApplied: "NOT APPLIED",
     description:
       "Create beautiful and functional user interfaces for our suite of products. Strong design skills and frontend development expertise required.",
@@ -43,7 +53,9 @@ let allJobs = [
   {
     name: "MegaCorp Solutions",
     status: "JavaScript Developer",
-    salary: "New York, NY • Full-time • $130,000 - $170,00",
+    location: "Austin, TX",
+    type: "Full-time",
+    salary: "$130,000 - $170,000",
     notApplied: "NOT APPLIED",
     description:
       "Build enterprise applications with JavaScript and modern frameworks. We offer competitive compensation, health insurance, and professional development opportunities.",
@@ -51,7 +63,9 @@ let allJobs = [
   {
     name: "StartupXYZ",
     status: "Full Stack Engineer",
-    salary: "Remote • Full-time • $120,000 - $160,000",
+    location: "Remote",
+    type: "Full-time",
+    salary: "$120,000 - $160,000",
     notApplied: "NOT APPLIED",
     description:
       "Join our fast-growing startup and work on our core platform. Experience with Node.js and React required. Great benefits and equity package included.",
@@ -59,7 +73,9 @@ let allJobs = [
   {
     name: "TechCorp Industries",
     status: "Senior Frontend Developer",
-    salary: "San Francisco, CA • Full-time • $130,000 - $175,000",
+    location: "San Francisco, CA",
+    type: "Full-time",
+    salary: "$130,000 - $175,000",
     notApplied: "NOT APPLIED",
     description:
       "We are looking for an experienced Frontend Developer to build scalable web applications using React and TypeScript. You will work with a talented team on cutting-edge projects.",
@@ -71,8 +87,117 @@ let rejected = [];
 let currentTabId = "info-toggle";
 let mainContainer = document.querySelector("main");
 
-// process to delete the card from section
+// refresh the tab when clicking the interview and rejected button to show all update details
+function refreshPage() {
+  if (currentTabId === "interview-toggle") {
+    renderInterview();
+    showSelectedSectionForInterview();
+    updateInterViewCount();
+  } else if (currentTabId === "rejected-toggle") {
+    renderRejected();
+    showSelectedSectionForRejected();
+    updateRejectedCount();
+  } else if (currentTabId === "info-toggle") {
+    document.getElementById("allCardSection").classList.remove("hidden");
+    document.getElementById("interviewAllCardSection").classList.add("hidden");
+    document.getElementById("interviewNoJobs").classList.add("hidden");
+    document.getElementById("rejectedCardSection").classList.add("hidden");
+    document.getElementById("rejectedNoJobs").classList.add("hidden");
+    noJobAvailableSectionForInfo();
+  }
+}
+
+// toggling the button
 mainContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("interview-button")) {
+    let parent = event.target.parentNode.parentNode.parentNode;
+
+    // get the data
+    let name = parent.querySelector(".application-name").innerText;
+    let status = parent.querySelector(".application-status").innerText;
+    let location = parent.querySelector(".location").innerText;
+    let type = parent.querySelector(".type").innerText;
+    let salary = parent.querySelector(".salary").innerText;
+    let description = parent.querySelector(
+      ".application-description",
+    ).innerText;
+
+    // toggling the color when selected
+    allJobs = allJobs.map((job) =>
+      job.name === name ? { ...job, notApplied: "INTERVIEW" } : job,
+    );
+
+    // pushing the data to an array
+    let applicationInfo = {
+      name,
+      status,
+      location,
+      type,
+      salary,
+      description,
+      notApplied: "INTERVIEW",
+    };
+    // checking the existing item
+    let exists = interview.find((item) => item.name == applicationInfo.name);
+    if (!exists) {
+      interview.push(applicationInfo);
+      setTotalInterviewRejectedCount();
+    }
+    // reassigning the rejected array when updating the interview array
+    rejected = rejected.filter((item) => item.name != applicationInfo.name);
+    // rendering and updating the count to show
+    renderAllJobs();
+    renderInterview();
+    renderRejected();
+    setTotalInterviewRejectedCount();
+    refreshPage();
+    return;
+  } else if (event.target.classList.contains("rejected-btn")) {
+    // get the data
+    let parent = event.target.parentNode.parentNode.parentNode;
+    let name = parent.querySelector(".application-name").innerText;
+    let status = parent.querySelector(".application-status").innerText;
+    let location = parent.querySelector(".location").innerText;
+    let type = parent.querySelector(".type").innerText;
+    let salary = parent.querySelector(".salary").innerText;
+    let description = parent.querySelector(
+      ".application-description",
+    ).innerText;
+
+    // matching the data to give set not applied value
+    allJobs = allJobs.map((job) =>
+      job.name === name ? { ...job, notApplied: "REJECTED" } : job,
+    );
+
+    // stored the data to an array
+    let applicationInfo = {
+      name,
+      status,
+      location,
+      type,
+      salary,
+      description,
+      notApplied: "REJECTED",
+    };
+    // checking the existing data to push
+    let exists = rejected.find((item) => item.name == applicationInfo.name);
+
+    if (!exists) {
+      rejected.push(applicationInfo);
+      setTotalInterviewRejectedCount();
+    }
+    // updating the interview data when clicking rejected button
+    interview = interview.filter((item) => item.name != applicationInfo.name);
+
+    // updating and re rendering the data to get current count
+    renderAllJobs();
+    renderRejected();
+    renderInterview();
+    setTotalInterviewRejectedCount();
+    refreshPage();
+    return;
+  }
+  // finding the item to delete
   if (currentTabId === "interview-toggle") {
     if (
       event.target.classList.contains("fa-regular") ||
@@ -92,6 +217,7 @@ mainContainer.addEventListener("click", (event) => {
       updateInterViewCount();
       updateRejectedCount();
       refreshPage();
+      return;
     }
   } else if (currentTabId === "rejected-toggle") {
     if (
@@ -100,7 +226,6 @@ mainContainer.addEventListener("click", (event) => {
     ) {
       let parent = event.target.parentNode.parentNode.parentNode;
       let name = parent.querySelector(".application-name").innerText;
-      rejected = rejected.filter((item) => item.name != name);
 
       // removing the red border from all jobs section when clicking delete
       allJobs = allJobs.map((item) =>
@@ -116,6 +241,7 @@ mainContainer.addEventListener("click", (event) => {
       updateInterViewCount();
       updateRejectedCount();
       refreshPage();
+      return;
     }
   } else if (currentTabId === "info-toggle") {
     if (
@@ -133,117 +259,18 @@ mainContainer.addEventListener("click", (event) => {
       noJobAvailableSectionForInfo();
       updateAvailableJobCount();
       renderAllJobs();
+      return;
     }
   }
 });
 
-// refresh the tab when clicking the interview and rejected button to all update details
-function refreshPage() {
-  if (currentTabId === "interview-toggle") {
-    renderInterview();
-    showSelectedSectionForInterview();
-    updateInterViewCount();
-  } else if (currentTabId === "rejected-toggle") {
-    renderRejected();
-    showSelectedSectionForRejected();
-    updateRejectedCount();
-  } else if (currentTabId === "info-toggle") {
-    let makeHideAllCardSection = document.getElementById("allCardSection");
-    makeHideAllCardSection.classList.remove("hidden");
-    let makeHideInterviewSection = document.getElementById(
-      "noJobsAvailAble-section",
-    );
-    makeHideInterviewSection.classList.add("hidden");
-    let showRejectionSection = document.getElementById("rejectedCardSection");
-    showRejectionSection.classList.add("hidden");
-  }
-}
-
-// border-l-5 border-l-green-600 rounded-md
-// border border-gray-100
-
-mainContainer.addEventListener("click", (event) => {
-  if (event.target.classList.contains("interview-button")) {
-    let parent = event.target.parentNode.parentNode.parentNode;
-
-    let name = parent.querySelector(".application-name").innerText;
-    let status = parent.querySelector(".application-status").innerText;
-    let salary = parent.querySelector(".application-salary").innerText;
-    let description = parent.querySelector(
-      ".application-description",
-    ).innerText;
-    parent.classList.add("border", "border-red-600");
-
-    allJobs = allJobs.map((job) =>
-      job.name === name ? { ...job, notApplied: "INTERVIEW" } : job,
-    );
-
-    let applicationInfo = {
-      name,
-      status,
-      salary,
-      description,
-      notApplied: "INTERVIEW",
-    };
-
-    let exists = interview.find((item) => item.name == applicationInfo.name);
-
-    if (!exists) {
-      interview.push(applicationInfo);
-      setTotalInterviewRejectedCount();
-    }
-    rejected = rejected.filter((item) => item.name != applicationInfo.name);
-    renderAllJobs();
-    renderInterview();
-    renderRejected();
-    setTotalInterviewRejectedCount();
-    refreshPage();
-  } else if (event.target.classList.contains("rejected-btn")) {
-    let parent = event.target.parentNode.parentNode.parentNode;
-    let name = parent.querySelector(".application-name").innerText;
-    let status = parent.querySelector(".application-status").innerText;
-    let salary = parent.querySelector(".application-salary").innerText;
-    let description = parent.querySelector(
-      ".application-description",
-    ).innerText;
-
-    allJobs = allJobs.map((job) =>
-      job.name === name ? { ...job, notApplied: "REJECTED" } : job,
-    );
-
-    let notApplied = parent.querySelector(".application-not-applied");
-    console.log(notApplied);
-
-    let applicationInfo = {
-      name,
-      status,
-      salary,
-      description,
-      notApplied: "REJECTED",
-    };
-
-    let exists = rejected.find((item) => item.name == applicationInfo.name);
-
-    if (!exists) {
-      rejected.push(applicationInfo);
-      setTotalInterviewRejectedCount();
-    }
-
-    interview = interview.filter((item) => item.name != applicationInfo.name);
-    renderAllJobs();
-    renderRejected();
-    renderInterview();
-    setTotalInterviewRejectedCount();
-    refreshPage();
-  }
-});
-
+// stored the data
 let totalCount = document.getElementById("totalCount");
 let interviewCount = document.getElementById("interviewCount");
 let rejectedCount = document.getElementById("rejectedCount");
 let allCardSection = document.getElementById("allCardSection");
 
-// get the total, job and application count history
+// set the count of total, job, and total-application
 setTotalInterviewRejectedCount();
 function setTotalInterviewRejectedCount() {
   totalCount.innerText = allJobs.length;
@@ -251,105 +278,71 @@ function setTotalInterviewRejectedCount() {
   rejectedCount.innerText = rejected.length;
 }
 
+// stored the data in variable
 // Info / interview / rejected buttons
 let infoButton = document.getElementById("info-toggle");
 let interviewButton = document.getElementById("interview-toggle");
 let rejectedButton = document.getElementById("rejected-toggle");
 
-// this showSelectedSectionForInterview and showSelectedSectionForRejected function take decision which section to hidden or show on page
-
+// below 2 function taking decision to show or hidden data
 function showSelectedSectionForInterview() {
-  setTotalInterviewRejectedCount();
   if (interview.length == 0) {
-    // if interview section contains any property then show it otherwise show the Not job available.
-
-    let showInterviewNoCard = document.getElementById(
-      "noJobsAvailAble-section",
-    );
-    showInterviewNoCard.classList.remove("hidden");
-
-    // rejected all card section
-    let rejectedCardSection = document.getElementById("rejectedCardSection");
-    rejectedCardSection.classList.add("hidden");
-
-    // all card section from main section
-    let makeHideAllCardSection = document.getElementById("allCardSection");
-    makeHideAllCardSection.classList.add("hidden");
+    // hide rejectCard and allCard section
+    document.getElementById("rejectedCardSection").classList.add("hidden");
+    document.getElementById("allCardSection").classList.add("hidden");
+    document.getElementById("rejectedNoJobs").classList.add("hidden");
+    document.getElementById("infoNoJobs").classList.add("hidden");
+    document.getElementById("interviewAllCardSection").classList.add("hidden");
+    // show interviewNoJobs
+    document.getElementById("interviewNoJobs").classList.remove("hidden");
   } else {
-    // all card section from main section
-    let makeHideAllCardSection = document.getElementById("allCardSection");
-    makeHideAllCardSection.classList.add("hidden");
-
-    // No jobs available section
-    let noJobAvailableSection = document.getElementById(
-      "noJobsAvailAble-section",
-    );
-    noJobAvailableSection.classList.add("hidden");
-
-    // rejected all card section
-    let rejectedCardSection = document.getElementById("rejectedCardSection");
-    rejectedCardSection.classList.add("hidden");
-
-    // all card section from interview section
-    let allCardFromInterviewSection = document.getElementById(
-      "interviewAllCardSection",
-    );
-    allCardFromInterviewSection.classList.remove("hidden");
+    document.getElementById("allCardSection").classList.add("hidden");
+    document.getElementById("interviewNoJobs").classList.add("hidden");
+    document.getElementById("rejectedCardSection").classList.add("hidden");
+    document.getElementById("rejectedNoJobs").classList.add("hidden");
+    document
+      .getElementById("interviewAllCardSection")
+      .classList.remove("hidden");
   }
 }
 function showSelectedSectionForRejected() {
-  setTotalInterviewRejectedCount();
   if (rejected.length == 0) {
-    // all card section from interview section
-    let allCardFromInterviewSection = document.getElementById(
-      "interviewAllCardSection",
-    );
-    allCardFromInterviewSection.classList.add("hidden");
+    document.getElementById("rejectedCardSection").classList.add("hidden");
+    document.getElementById("rejectedNoJobs").classList.remove("hidden");
 
-    // show No Jobs available section
-    let noJobAvailableSection = document.getElementById(
-      "noJobsAvailAble-section",
-    );
-    noJobAvailableSection.classList.remove("hidden");
+    // info and interview hide
+    document.getElementById("allCardSection").classList.add("hidden");
+    document.getElementById("interviewAllCardSection").classList.add("hidden");
+    document.getElementById("infoNoJobs").classList.add("hidden");
 
-    // all card section from main section
-    let makeHideAllCardSection = document.getElementById("allCardSection");
-    makeHideAllCardSection.classList.add("hidden");
+    // interview no jobs hide
+    document.getElementById("interviewNoJobs").classList.add("hidden");
   } else {
     // all card section from main section
-    let makeHideAllCardSection = document.getElementById("allCardSection");
-    makeHideAllCardSection.classList.add("hidden");
+    document.getElementById("allCardSection").classList.add("hidden");
 
-    // all card from interviewSection
-    let interviewAllCardSection = document.getElementById(
-      "interviewAllCardSection",
-    );
-    interviewAllCardSection.classList.add("hidden");
+    //interviewCard section
+    document.getElementById("interviewAllCardSection").classList.add("hidden");
 
-    // No jobs available section
-    let noJobAvailableSection = document.getElementById(
-      "noJobsAvailAble-section",
-    );
-    noJobAvailableSection.classList.add("hidden");
+    // interviewNoJobs
+    document.getElementById("interviewNoJobs").classList.add("hidden");
 
     // rejected all card section
-    let rejectedCardSection = document.getElementById("rejectedCardSection");
-    rejectedCardSection.classList.remove("hidden");
+    document.getElementById("rejectedCardSection").classList.remove("hidden");
+    document.getElementById("rejectedNoJobs").classList.add("hidden");
 
-    let noJobsRejectedSection = document.getElementById(
-      "rejected-noJobsSection",
-    );
-    noJobsRejectedSection.classList.add("hidden");
+    // infoNoJobs section
+    document.getElementById("infoNoJobs").classList.add("hidden");
   }
 }
 
-// toggle select which section to show on page keep update data
+// this toggle update the current tab
 function toggleButton(id) {
   currentTabId = id;
   // adding white bg on all button
-  infoButton.classList.add("text-white", "bg-white");
-  interviewButton.classList.add("text-white", "bg-white");
-  rejectedButton.classList.add("text-white", "bg-white");
+  infoButton.classList.add("text-gray-500", "bg-white");
+  interviewButton.classList.add("text-gray-500", "bg-white");
+  rejectedButton.classList.add("text-gray-500", "bg-white");
 
   //   removing all blue bg
   infoButton.classList.remove("text-white", "bg-[#3B82F6]");
@@ -357,7 +350,7 @@ function toggleButton(id) {
   rejectedButton.classList.remove("text-white", "bg-[#3B82F6]");
 
   let selected = document.getElementById(id);
-  selected.classList.remove("text-white", "bg-white");
+  selected.classList.remove("text-gray-500", "bg-white");
   selected.classList.add("text-white", "bg-[#3B82F6]");
 
   toggleButtonCondition(id);
@@ -377,9 +370,7 @@ function toggleButton(id) {
     } else if (id === "info-toggle") {
       let makeHideAllCardSection = document.getElementById("allCardSection");
       makeHideAllCardSection.classList.remove("hidden");
-      let makeHideInterviewSection = document.getElementById(
-        "noJobsAvailAble-section",
-      );
+      let makeHideInterviewSection = document.getElementById("interviewNoJobs");
       makeHideInterviewSection.classList.add("hidden");
       let showRejectionSection = document.getElementById("rejectedCardSection");
       showRejectionSection.classList.add("hidden");
@@ -395,11 +386,12 @@ function toggleButton(id) {
   }
 }
 
-// render all jobs section
+// render all jobs html
 function renderAllJobs() {
   let html = "";
   allJobs.forEach((item) => {
-    // checking the status if interview show the green border else red
+    // checking the status value , if value interview make border green ,
+    // if value rejected show the red border
     const leftBorder =
       item.notApplied === "INTERVIEW"
         ? "border-4 border-l-green-600"
@@ -436,9 +428,9 @@ function renderAllJobs() {
           </div>
           <div class="card-description">
             <p
-              class="application-salary font-normal text-[16px] text-gray-500 my-5"
+              class="font-normal text-[16px] text-gray-500 my-5"
             >
-              ${item.salary}
+              <span class="location">${item.location}</span> • <span class="type">${item.type}</span> • <span class="salary">${item.salary}</span>  
             </p>
             <p class="current-status bg-[#EEF4FF] rounded-lg py-2 px-3 font-medium text-[12px] inline ${statusStyle}"
             >
@@ -450,15 +442,11 @@ function renderAllJobs() {
              ${item.description}
             </p>
             <div class="flex gap-2">
-              <button
-                id="interview-btn"
-                class="interview-button btn btn-outline btn-accent"
+              <button class="interview-button btn btn-outline btn-accent"
               >
                 INTERVIEW
               </button>
-              <button
-                id="rejected-btn"
-                class="rejected-btn btn btn-outline btn-error"
+              <button class="rejected-btn btn btn-outline btn-error"
               >
                 REJECTED
               </button>
@@ -469,8 +457,7 @@ function renderAllJobs() {
   });
   document.getElementById("allCardSection").innerHTML = html;
 }
-
-// render interview all card
+// render the interview html
 function renderInterview() {
   let html = "";
   interview.forEach((item) => {
@@ -498,9 +485,9 @@ function renderInterview() {
           </div>
           <div class="card-description">
             <p
-              class="application-salary font-normal text-[16px] text-gray-500 my-5"
+              class="font-normal text-[16px] text-gray-500 my-5"
             >
-              ${item.salary}
+              <span class="location">${item.location}</span> • <span class="type">${item.type}</span> • <span class="salary">${item.salary}</span> 
             </p>
             <p
               class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-green-600 bg-green-600/30 border-2 border-green-500 cursor-pointer"
@@ -513,10 +500,10 @@ function renderInterview() {
               ${item.description}
             </p>
             <div class="flex gap-2">
-              <button id="interview-btn" class="interview-button btn btn-outline btn-accent">
+              <button class="interview-button btn btn-outline btn-accent">
                 INTERVIEW
               </button>
-              <button id="rejected-btn" class="rejected-btn btn btn-outline btn-error">
+              <button  class="rejected-btn btn btn-outline btn-error">
                 REJECTED
               </button>
             </div>
@@ -526,8 +513,7 @@ function renderInterview() {
   });
   document.getElementById("interviewAllCardSection").innerHTML = html;
 }
-
-// render rejected all card
+// render rejected html
 function renderRejected() {
   let html = "";
   rejected.forEach((item) => {
@@ -555,14 +541,14 @@ function renderRejected() {
           </div>
           <div class="card-description">
             <p
-              class="application-salary font-normal text-[16px] text-gray-500 my-5"
+              class="font-normal text-[16px] text-gray-500 my-5"
             >
-              ${item.salary}
+              <span class="location">${item.location}</span> • <span class="type">${item.type}</span> • <span class="salary">${item.salary}</span> 
             </p>
             <p
               class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-red-600 bg-red-600/30 border-2 border-red-600 cursor-pointer"
             >
-              ${item.notApplied}
+              ${item.notApplied} 
             </p>
             <p
               class="application-description font-normal text-[16px] text-gray-600 mb-5 mt-3"
@@ -570,10 +556,10 @@ function renderRejected() {
               ${item.description}
             </p>
             <div class="flex gap-2">
-              <button id="interview-btn" class="interview-button btn btn-outline btn-accent">
+              <button class="interview-button btn btn-outline btn-accent">
                 INTERVIEW
               </button>
-              <button id="rejected-btn" class="rejected-btn btn btn-outline btn-error ">
+              <button class="rejected-btn btn btn-outline btn-error ">
                 REJECTED
               </button>
             </div>
@@ -584,7 +570,7 @@ function renderRejected() {
   document.getElementById("rejectedCardSection").innerHTML = html;
 }
 
-// update the count of the application number
+// update the count of the interview count
 function updateInterViewCount() {
   if (interview.length === 0) {
     document.getElementById("active-jobs").innerText =
@@ -594,6 +580,7 @@ function updateInterViewCount() {
       `${interview.length} of ${allJobs.length} jobs`;
   }
 }
+// update the count of rejected count
 function updateRejectedCount() {
   if (rejected.length === 0) {
     document.getElementById("active-jobs").innerText =
@@ -603,29 +590,25 @@ function updateRejectedCount() {
       `${rejected.length} of ${allJobs.length} jobs`;
   }
 }
+// update the count of total count
 function updateAvailableJobCount() {
   document.getElementById("active-jobs").innerText = `${allJobs.length} jobs`;
 }
 updateAvailableJobCount();
 
-// if the all jobs section is empty show this no jobs available section
+// if the total jobs length  is 0 show this (no jobs available section0
 function noJobAvailableSectionForInfo() {
   if (currentTabId === "info-toggle") {
     if (allJobs.length === 0) {
-      let allJobForNoJob = document.getElementById(
-        "noJobsAvailAble-section-for-info",
-      );
-      allJobForNoJob.classList.remove("hidden");
+      document.getElementById("infoNoJobs").classList.remove("hidden");
+      document.getElementById("rejectedNoJobs").classList.add("hidden");
+      document.getElementById("interviewNoJobs").classList.add("hidden");
     } else {
-      let allJobForNoJob = document.getElementById(
-        "noJobsAvailAble-section-for-info",
-      );
-      allJobForNoJob.classList.add("hidden");
+      document.getElementById("infoNoJobs").classList.add("hidden");
+      document.getElementById("rejectedNoJobs").classList.add("hidden");
+      document.getElementById("interviewNoJobs").classList.add("hidden");
     }
   } else {
-    let allJobForNoJob = document.getElementById(
-      "noJobsAvailAble-section-for-info",
-    );
-    allJobForNoJob.classList.add("hidden");
+    document.getElementById("infoNoJobs").classList.add("hidden");
   }
 }

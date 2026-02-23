@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="tailwind.css" />
     <!-- tailwind external file -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- daisyUI -->
@@ -12,7 +13,6 @@
       rel="stylesheet"
       type="text/css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
       rel="stylesheet"
@@ -136,7 +136,7 @@
     <section class="container px-4 mx-auto">
       <!-- No Jobs available -->
       <section
-        id="noJobsAvailAble-section"
+        id="interviewNoJobs"
         class="noJobsAvailAble container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-red-800 mt-4 px-4 hidden"
       >
         <img src="assets/jobs.png" alt="NO JOBS" />
@@ -148,7 +148,7 @@
 
       <!-- rejected no jobs section -->
       <section
-        id="rejected-noJobsSection"
+        id="rejectedNoJobs"
         class="container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-gray-600 mt-4 px-4 hidden"
       >
         <img src="assets/jobs.png" alt="NO JOBS" />
@@ -157,9 +157,9 @@
           Check back soon for new job opportunities
         </p>
       </section>
-
+      <!-- infoNoJobs -->
       <section
-        id="noJobsAvailAble-section-for-info"
+        id="infoNoJobs"
         class="noJobsAvailAble container mx-auto flex flex-col justify-center items-center py-[110px] rounded-lg border-2 border-dotted border-red-800 mt-4 px-4 hidden"
       >
         <img src="assets/jobs.png" alt="NO JOBS" />
@@ -169,6 +169,7 @@
         </p>
       </section>
     </section>
+
     <script src="script/info.js"></script>
   </body>
 </html>
