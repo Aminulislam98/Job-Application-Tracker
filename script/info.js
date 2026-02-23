@@ -409,12 +409,12 @@ function renderAllJobs() {
     // changing style based on the interview and rejected
     const statusStyle =
       item.notApplied === "INTERVIEW"
-        ? "border-1 bg-green-600 text-white rounded-lg"
+        ? "bg-green-600 text-white rounded-lg"
         : item.notApplied === "REJECTED"
-          ? "border-1 bg-red-600 text-white rounded-lg"
+          ? "bg-red-600 text-white rounded-lg"
           : "";
     html += `
-    <div class="application-section w-full p-6 shadow border rounded-xl border-gray-100 ${leftBorder}">
+    <div class="application-section w-full p-6 shadow border rounded-xl border-gray-100 transition-transform  duration-300 ease-out hover:translate-y-1 hover:shadow-lg ${leftBorder}">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
@@ -440,7 +440,7 @@ function renderAllJobs() {
             >
               ${item.salary}
             </p>
-            <p class="current-status bg-[#EEF4FF] rounded-lg py-2 px-3 font-medium text-[14px] inline ${statusStyle}"
+            <p class="current-status bg-[#EEF4FF] rounded-lg py-2 px-3 font-medium text-[12px] inline ${statusStyle}"
             >
              ${item.notApplied}
             </p>
@@ -475,7 +475,7 @@ function renderInterview() {
   let html = "";
   interview.forEach((item) => {
     html += `
-    <div class="card w-full p-6 shadow border border-gray-100 border-l-4 border-l-green-600">
+    <div class="card w-full p-6 shadow border border-gray-100 border-2 border-green-600 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg bg-green-50">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
@@ -503,7 +503,7 @@ function renderInterview() {
               ${item.salary}
             </p>
             <p
-              class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-green-600 bg-green-600/30 border-2 border-green-600 cursor-pointer"
+              class="application-not-applied py-1 px-2 font-bold text-[12px] inline rounded text-green-600 bg-green-600/30 border-2 border-green-500 cursor-pointer"
             >
               ${item.notApplied}
             </p>
@@ -532,7 +532,7 @@ function renderRejected() {
   let html = "";
   rejected.forEach((item) => {
     html += `
-    <div class="card w-full p-6 shadow border border-gray-100 border-l-4 border-l-red-600 ">
+    <div class="card w-full p-6 shadow border border-gray-100 border-2 border-red-600 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg bg-red-50">
           <div class="card-name-status flex justify-between items-center">
             <div>
               <h2 class="application-name font-semibold text-[18px] mb-0">
