@@ -436,11 +436,11 @@ function renderAllJobs() {
              ${item.description}
             </p>
             <div class="flex gap-2">
-              <button class="interview-button btn btn-outline btn-accent"
+              <button class="interview-button  btn-outline border-2 border-green-600 btn text-green-600 hover:bg-green-600 hover:text-white"
               >
                 INTERVIEW
               </button>
-              <button class="rejected-btn btn btn-outline btn-error"
+              <button class="rejected-btn btn btn-outline border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white"
               >
                 REJECTED
               </button>
@@ -494,10 +494,10 @@ function renderInterview() {
               ${item.description}
             </p>
             <div class="flex gap-2">
-              <button class="interview-button btn btn-outline btn-accent">
+              <button class="interview-button btn btn-outline border-2 border-green-600 btn text-green-600 hover:bg-green-600 hover:text-white">
                 INTERVIEW
               </button>
-              <button  class="rejected-btn btn btn-outline btn-error">
+              <button  class="rejected-btn btn btn-outline border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white">
                 REJECTED
               </button>
             </div>
@@ -550,10 +550,10 @@ function renderRejected() {
               ${item.description}
             </p>
             <div class="flex gap-2">
-              <button class="interview-button btn btn-outline btn-accent">
+              <button class="interview-button btn btn-outline border-2 border-green-600 btn text-green-600 hover:bg-green-600 hover:text-white">
                 INTERVIEW
               </button>
-              <button class="rejected-btn btn btn-outline btn-error ">
+              <button class="rejected-btn btn btn-outline border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white">
                 REJECTED
               </button>
             </div>
