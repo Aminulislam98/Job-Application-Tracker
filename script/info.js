@@ -205,12 +205,10 @@ mainContainer.addEventListener("click", (event) => {
     ) {
       let parent = event.target.parentNode.parentNode.parentNode;
       let name = parent.querySelector(".application-name").innerText;
-      interview = interview.filter((item) => item.name != name);
 
-      // removing the green border from all jobs section when clicking delete
-      allJobs = allJobs.map((item) =>
-        item.name === name ? { ...item, notApplied: "NOT APPLIED" } : item,
-      );
+      interview = interview.filter((item) => item.name != name);
+      rejected = rejected.filter((item) => item.name != name);
+      allJobs = allJobs.filter((item) => item.name != name);
       renderAllJobs();
       renderInterview();
       setTotalInterviewRejectedCount();
@@ -228,11 +226,7 @@ mainContainer.addEventListener("click", (event) => {
       let name = parent.querySelector(".application-name").innerText;
 
       // removing the red border from all jobs section when clicking delete
-      allJobs = allJobs.map((item) =>
-        item.name === name ? { ...item, notApplied: "NOT APPLIED" } : item,
-      );
-
-      // reassigning the array when deleting card from info section
+      allJobs = allJobs.filter((item) => item.name != name);
       rejected = rejected.filter((item) => item.name != name);
       interview = interview.filter((item) => item.name != name);
       renderAllJobs();
